@@ -72,7 +72,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         String pass = edtPassword.getText().toString();
         AuthRequest login = new AuthRequest(email,pass);
         try{
-            Call<AuthRequest>   call = accountService.Login(login);
+            Call<AuthRequest> call = accountService.Login(login);
             call.enqueue(new Callback<AuthRequest>() {
                 @Override
                 public void onResponse(Call<AuthRequest> call, Response<AuthRequest> response) {

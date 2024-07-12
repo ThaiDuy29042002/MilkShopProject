@@ -1,13 +1,19 @@
 package com.example.projectmilkshop.Domain;
 
-public class Product {
-    private int ProductId;
-    private String ProductName;
-    private String ProductDescription;
-    private String pic = "milk";
+import com.google.gson.annotations.SerializedName;
 
+public class Product {
+    @SerializedName("productId")
+    private int ProductId;
+    @SerializedName("productName")
+    private String ProductName;
+    @SerializedName("productDescription")
+    private String ProductDescription;
+    @SerializedName("capacity")
     private double Capacity;
+    @SerializedName("productPrice")
     private double ProductPrice;
+    private String pic = "milk";
 
     public Product(int productId, String productName, String productDescription, double capacity, double productPrice) {
         ProductId = productId;

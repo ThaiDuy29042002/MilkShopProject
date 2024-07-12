@@ -15,5 +15,4 @@ public interface ProductService {
     Call<Product[]> GetAllProducts();
     @GET(PRODUCT + "/{productId}")
     Call<Product> GetProductById(@Path("productId") Object productId);
-
 }
