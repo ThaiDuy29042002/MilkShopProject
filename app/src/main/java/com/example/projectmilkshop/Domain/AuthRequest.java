@@ -1,7 +1,13 @@
 package com.example.projectmilkshop.Domain;
 
+import com.google.gson.annotations.SerializedName;
+
 public class AuthRequest {
+    @SerializedName("Email")
+
     public String Email;
+    @SerializedName("Password")
+
     public String Password;
 
     public AuthRequest(String email, String password) {

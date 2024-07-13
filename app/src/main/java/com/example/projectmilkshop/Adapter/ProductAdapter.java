@@ -1,5 +1,7 @@
 package com.example.projectmilkshop.Adapter;
 
+import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,6 +12,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.example.projectmilkshop.Activity.ShowDetailActivity;
 import com.example.projectmilkshop.Domain.Product;
 import com.example.projectmilkshop.R;
 
@@ -35,26 +38,18 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHold
 
         holder.title.setText(milkDomains.get(position).getProductName());
         holder.fee.setText(String.valueOf(milkDomains.get(position).getProductPrice()));
-        holder.quality.setText(String.valueOf(milkDomains.get(position).getCapacity()));
-        holder.total.setText(String.valueOf(Math.round(milkDomains.get(position).getCapacity()*milkDomains.get(position).getProductPrice())));
+        holder.total.setText(String.valueOf(milkDomains.get(position).getCapacity()));
         int drawableResuorceId = holder.itemView.getContext().getResources()
                 .getIdentifier(milkDomains.get(position).getPic(),"drawable",
                         holder.itemView.getContext().getPackageName());
         Glide.with(holder.itemView.getContext())
                 .load(drawableResuorceId)
                 .into(holder.pic);
-
-        holder.btnAddQuality.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-            }
-        });
-        holder.btnMinusQuality.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-            }
+        holder.imgItemAdd.setOnClickListener(v -> {
+            Context context = holder.itemView.getContext();
+            Intent intent = new Intent(context, ShowDetailActivity.class);
+            intent.putExtra("productId", milkDomains.get(position).getProductId());
+            context.startActivity(intent);
         });
     }
 
@@ -65,8 +60,8 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHold
 
     public class ViewHolder extends RecyclerView.ViewHolder {
 
-        TextView title, fee, total, quality;
-        ImageView pic, btnMinusQuality, btnAddQuality;
+        TextView title, fee, total;
+        ImageView pic, imgItemAdd;
 
         public ViewHolder(@NonNull View itemview){
 
@@ -75,9 +70,7 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHold
             pic = itemview.findViewById(R.id.imgItemPic);
             fee = itemview.findViewById(R.id.tvItemFee);
             total = itemview.findViewById(R.id.tvItemTotal);
-            btnAddQuality = itemview.findViewById(R.id.btnAddQuality);
-            btnMinusQuality = itemview.findViewById(R.id.btnMinusQuality);
-            quality = itemview.findViewById(R.id.tvItemQuality);
+            imgItemAdd = itemView.findViewById(R.id.imgItemAdd);
         }
     }
 }

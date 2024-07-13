@@ -132,9 +132,6 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
         }catch (Exception e) {
             Log.d("Fix your information", e.getMessage());
         }
-//        Intent intent = new Intent(this, LoginActivity.class);
-//        startActivity(intent);
-//        finish();
     }
 
     @Override

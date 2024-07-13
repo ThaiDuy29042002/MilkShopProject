@@ -6,13 +6,24 @@ public class Cart {
 
     private int ProductId;
 
+    private double UnitPrice;
     private int AccountId;
 
     private int Quantity;
+    private String pic = "milk_pint";
+
 
     public Cart(int cartId, int productId, int accountId, int quantity) {
         CartId = cartId;
         ProductId = productId;
+        AccountId = accountId;
+        Quantity = quantity;
+    }
+
+    public Cart(int cartId, int productId, double unitPrice, int accountId, int quantity) {
+        CartId = cartId;
+        ProductId = productId;
+        UnitPrice = unitPrice;
         AccountId = accountId;
         Quantity = quantity;
     }
@@ -47,5 +58,21 @@ public class Cart {
 
     public void setQuantity(int quantity) {
         Quantity = quantity;
+    }
+
+    public double getUnitPrice() {
+        return UnitPrice;
+    }
+
+    public void setUnitPrice(double unitPrice) {
+        UnitPrice = unitPrice;
+    }
+
+    public String getPic() {
+        return pic;
+    }
+
+    public void setPic(String pic) {
+        this.pic = pic;
     }
 }

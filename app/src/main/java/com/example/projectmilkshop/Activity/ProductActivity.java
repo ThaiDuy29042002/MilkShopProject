@@ -32,6 +32,8 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class ProductActivity extends AppCompatActivity {
+
+    private static final String TAG = "ProductActivity";
     ProductService productService;
     private RecyclerView.Adapter adapter1;
     private RecyclerView recyclerViewProduct;
@@ -101,6 +103,18 @@ public class ProductActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 startActivity(new Intent(ProductActivity.this, ProductActivity.class));
+            }
+        });
+        cartbtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(ProductActivity.this, CartActivity.class));
+            }
+        });
+        supportbtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(ProductActivity.this, ChatboxActivity.class));
             }
         });
         mapbtn.setOnClickListener(new View.OnClickListener() {

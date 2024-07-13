@@ -24,10 +24,10 @@
 
             <ImageView
                 android:id="@+id/imgMilk"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:layout_height="273dp"
                 android:layout_margin="24dp"
-                app:srcCompat="@drawable/img_menu_background" />
+                app:srcCompat="@drawable/milk_pint" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -67,8 +67,8 @@
 
                         <ImageView
                             android:id="@+id/btnMinusQuality"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
+                            android:layout_width="26dp"
+                            android:layout_height="35dp"
                             android:layout_marginStart="8dp"
                             android:layout_marginEnd="8dp"
                             app:layout_constraintBottom_toBottomOf="parent"
@@ -90,8 +90,8 @@
 
                             <ImageView
                                 android:id="@+id/imageView6"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
+                                android:layout_width="83dp"
+                                android:layout_height="36dp"
                                 app:layout_constraintBottom_toBottomOf="parent"
                                 app:layout_constraintEnd_toEndOf="parent"
                                 app:layout_constraintStart_toStartOf="parent"
@@ -117,8 +117,8 @@
 
                         <ImageView
                             android:id="@+id/btnAddQuality"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
+                            android:layout_width="27dp"
+                            android:layout_height="31dp"
                             android:layout_marginStart="8dp"
                             android:layout_marginEnd="8dp"
                             app:layout_constraintBottom_toBottomOf="parent"
@@ -158,7 +158,7 @@
 
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
+                    android:layout_height="151dp"
                     android:orientation="horizontal">
 
                     <androidx.constraintlayout.widget.ConstraintLayout
