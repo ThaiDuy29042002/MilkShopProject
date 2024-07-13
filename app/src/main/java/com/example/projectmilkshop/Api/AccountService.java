@@ -15,7 +15,7 @@ public interface AccountService {
     String UPDATEACCOUNT="update-account";
 
     @POST(LOGIN)
-    Call<AuthRequest> Login(@Body AuthRequest account);
+    Call<String> Login(@Body AuthRequest account);
 
     @POST(REGISTER)
     Call<Account> Register(@Body Account account);

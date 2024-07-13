@@ -19,7 +19,6 @@ public class CartRequest {
         this.status = status;
     }
 
-    // Getters and setters
     public int getProductId() {
         return productId;
     }

@@ -50,6 +50,25 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
                 startActivity(new Intent(MapActivity.this, MainActivity.class));
             }
         });
+        profilebtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(MapActivity.this, ProductActivity.class));
+            }
+        });
+        cartbtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(MapActivity.this, CartActivity.class));
+            }
+        });
+        supportbtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(MapActivity.this, ChatboxActivity.class));
+            }
+        });
+
         mapbtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

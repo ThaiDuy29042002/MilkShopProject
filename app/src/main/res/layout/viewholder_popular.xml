@@ -4,19 +4,20 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:layout_marginBottom="8dp"
+    android:layout_margin="8dp"
+    android:layout_marginBottom="10dp"
     android:background="@drawable/white_recomended_bth"
-    android:elevation="3dp">
+    android:elevation="5dp">
 
     <ImageView
         android:id="@+id/imgItemPic"
         android:layout_width="100dp"
         android:layout_height="100dp"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="8dp"
         android:layout_marginEnd="16dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.501"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/grain_milk" />
@@ -34,14 +35,18 @@
         app:layout_constraintTop_toBottomOf="@+id/imgItemPic" />
 
     <ImageView
-        android:id="@+id/imgAdd"
+        android:id="@+id/imgItemAdd"
         android:layout_width="42dp"
         android:layout_height="23dp"
         android:layout_marginTop="12dp"
+        android:layout_marginEnd="12dp"
+        android:layout_marginBottom="12dp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="@+id/tvItemTitle"
-        app:layout_constraintHorizontal_bias="0.95"
+        app:layout_constraintHorizontal_bias="0.979"
         app:layout_constraintStart_toStartOf="@+id/tvItemTitle"
         app:layout_constraintTop_toBottomOf="@+id/tvItemTitle"
+        app:layout_constraintVertical_bias="0.0"
         app:srcCompat="@drawable/baseline_add_shopping_add_cart_24" />
 
     <TextView
@@ -50,12 +55,15 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="4dp"
+        android:layout_marginBottom="15dp"
         android:text="$0.0"
         android:textColor="@color/black"
-        android:textSize="18sp"
+        android:textSize="14sp"
         android:textStyle="bold"
-        app:layout_constraintEnd_toStartOf="@+id/imgAdd"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/imgItemAdd"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="@+id/tvItemTitle"
-        app:layout_constraintTop_toBottomOf="@+id/tvItemTitle" />
+        app:layout_constraintTop_toBottomOf="@+id/tvItemTitle"
+        app:layout_constraintVertical_bias="0.0" />
 </androidx.constraintlayout.widget.ConstraintLayout>

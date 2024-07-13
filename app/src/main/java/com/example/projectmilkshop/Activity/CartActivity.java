@@ -1,7 +1,9 @@
 package com.example.projectmilkshop.Activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
@@ -63,15 +65,19 @@ public class CartActivity extends AppCompatActivity {
         jwtToken = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InVzZXIwMUBnbWFpbC5jb20iLCJyb2xlIjoiMiIsImFjY291bnRJZCI6IjEiLCJuYmYiOjE3MjA4NDI4NDUsImV4cCI6MTcyMDg0NjQ0NSwiaWF0IjoxNzIwODQyODQ1LCJpc3MiOiJJc3N1ZXIiLCJhdWQiOiJBdWRpZW5jZSJ9.smuFiJ7WlcLOIgCtH48KiGhd3bHDueOuQPiODsUUnt4";
                 //sessionManager.getJwtToken();
         cartService = CartRepository.getCartService(jwtToken);
-        initlist();
+
         fetchCartItems();
 
+        bottomNavigation();
+        btnCheckout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+            }
+        });
+
     }
 
-    private void initlist() {
-        LinearLayoutManager linearLayoutManager=new LinearLayoutManager(this,LinearLayoutManager.VERTICAL,false);
-        recyclerView.setLayoutManager(linearLayoutManager);
-    }
+
 
     private void fetchCartItems() {
         Call<Cart[]> call = cartService.GetCartOfAccount();
@@ -102,5 +108,43 @@ public class CartActivity extends AppCompatActivity {
         }
         adapter = new CartAdapter(cartItemsList, cartService, jwtToken);
         recyclerView.setAdapter(adapter);
+    }
+    private void bottomNavigation() {
+        LinearLayout homebtn = findViewById(R.id.homeBtn);
+        LinearLayout profilebtn = findViewById(R.id.profilebtn);
+        LinearLayout cartbtn = findViewById(R.id.cartbtn);
+        LinearLayout supportbtn = findViewById(R.id.supportbtn);
+        LinearLayout mapbtn = findViewById(R.id.btnMap);
+
+        homebtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(CartActivity.this, MainActivity.class));
+            }
+        });
+        profilebtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(CartActivity.this, ProductActivity.class));
+            }
+        });
+        cartbtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(CartActivity.this, CartActivity.class));
+            }
+        });
+        supportbtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(CartActivity.this, ChatboxActivity.class));
+            }
+        });
+        mapbtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(CartActivity.this, MapActivity.class));
+            }
+        });
     }
 }

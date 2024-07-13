@@ -17,7 +17,7 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 public class APIClient {
-    private static String baseURL = "https://192.168.2.16:7077/api/v1/"; //10.87.1.184 at FPT
+    private static String baseURL = "https://10.87.1.184:7077/api/v1/";
     private static Retrofit retrofit;
     public SharedPreferences sharedPreferences;
     public APIClient(SharedPreferences sharedPreferences){

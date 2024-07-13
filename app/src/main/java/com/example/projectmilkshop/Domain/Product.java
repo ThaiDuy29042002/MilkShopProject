@@ -13,7 +13,7 @@ public class Product {
     private double Capacity;
     @SerializedName("productPrice")
     private double ProductPrice;
-    private String pic = "milk";
+    private String pic = "milk_pint";
 
     public Product(int productId, String productName, String productDescription, double capacity, double productPrice) {
         ProductId = productId;

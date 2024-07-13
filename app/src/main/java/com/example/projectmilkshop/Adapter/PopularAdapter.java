@@ -1,5 +1,7 @@
 package com.example.projectmilkshop.Adapter;
 
+import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,6 +12,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.example.projectmilkshop.Activity.ShowDetailActivity;
 import com.example.projectmilkshop.Domain.Product;
 import com.example.projectmilkshop.R;
 
@@ -41,6 +44,13 @@ public class PopularAdapter extends RecyclerView.Adapter<PopularAdapter.ViewHold
         Glide.with(holder.itemView.getContext())
                 .load(drawableResuorceId)
                 .into(holder.pic);
+
+        holder.addBtn.setOnClickListener(v -> {
+            Context context = holder.itemView.getContext();
+            Intent intent = new Intent(context, ShowDetailActivity.class);
+            intent.putExtra("productId", milkDomains.get(position).getProductId());
+            context.startActivity(intent);
+        });
     }
 
     @Override
@@ -59,7 +69,7 @@ public class PopularAdapter extends RecyclerView.Adapter<PopularAdapter.ViewHold
             title = itemview.findViewById(R.id.tvItemTitle);
             pic = itemview.findViewById(R.id.imgItemPic);
             fee = itemview.findViewById(R.id.tvItemFee);
-            addBtn = itemview.findViewById(R.id.imgAdd);
+            addBtn = itemview.findViewById(R.id.imgItemAdd);
         }
     }
 }

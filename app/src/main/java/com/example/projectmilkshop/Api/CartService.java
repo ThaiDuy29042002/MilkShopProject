@@ -19,7 +19,7 @@ public interface CartService {
     Call<Cart[]> GetCartOfAccount();
 
     @POST(CART)
-    Call<Cart> AddProductToCart(@Body Cart cart);
+    Call<Cart> AddProductToCart(@Body CartRequest cart);
 
     @DELETE(CART)
     Call<Cart> RemoveProductFromCart(@Body Cart cart);

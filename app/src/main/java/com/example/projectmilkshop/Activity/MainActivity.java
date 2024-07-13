@@ -37,7 +37,7 @@ public class MainActivity extends AppCompatActivity {
     ProductService productService;
     private RecyclerView.Adapter adapter1, adapter2;
     private RecyclerView recylerViewCategory, recyclerViewPopular;
-    private TextView tvMap, tvProfile, tvCart, tvSupport;
+    private TextView tvMap, tvProfile, tvCart, tvSupport, textView5, tvSeeMore;
     private EditText edtSearch;
 
     @Override
@@ -51,8 +51,17 @@ public class MainActivity extends AppCompatActivity {
             return insets;
         });
 
+        tvSeeMore = findViewById(R.id.tvSeeMore);
+        textView5 = findViewById(R.id.textView5);
         edtSearch = findViewById(R.id.edtSearch);
         productService = ProductRepository.getProductService();
+
+        tvSeeMore.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(MainActivity.this, ProductActivity.class));
+            }
+        });
         recylerViewCategory();
         recyclerViewPopular();
         bottomNavigation();
@@ -77,6 +86,21 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(new Intent(MainActivity.this, ProductActivity.class));
             }
         });
+        cartbtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(MainActivity.this, CartActivity.class));
+            }
+        });
+        supportbtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(MainActivity.this, ChatboxActivity.class));
+            }
+        });
+
+
+
         mapbtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -91,7 +115,7 @@ public class MainActivity extends AppCompatActivity {
         recylerViewCategory=findViewById(R.id.viewProduct);
         recylerViewCategory.setLayoutManager(linearLayoutManager);
         ArrayList<CategoryDoman> ctList = new ArrayList<>();
-        ctList.add(new CategoryDoman("Milk","milk"));
+        ctList.add(new CategoryDoman("Milk","milk_pint"));
         ctList.add(new CategoryDoman("Grain Milk","grain_milk"));
 
         adapter1 = new CategoryAdapter(ctList);
@@ -114,7 +138,7 @@ public class MainActivity extends AppCompatActivity {
                     return;
                 }
                 for (Product productl : products) {
-                    Product product = new Product(productl.getProductName(), productl.getCapacity(), productl.getProductPrice());
+                    Product product = new Product(productl.getProductId() ,productl.getProductName(), productl.getCapacity(), productl.getProductPrice());
                     mList.add(product);
                 }
                 adapter2 = new PopularAdapter(mList);

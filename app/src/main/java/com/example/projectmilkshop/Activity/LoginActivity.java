@@ -18,6 +18,7 @@ import androidx.core.view.WindowInsetsCompat;
 import com.example.projectmilkshop.Api.AccountRepository;
 import com.example.projectmilkshop.Api.AccountService;
 import com.example.projectmilkshop.Domain.AuthRequest;
+import com.example.projectmilkshop.Interceptor.SessionManager;
 import com.example.projectmilkshop.R;
 
 import retrofit2.Call;
@@ -29,6 +30,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     private TextView tvRegister, tvLogin, tvForgotPassword;
     private final String REQUIRE = "Require";
     AccountService accountService;
+    private SessionManager sessionManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -72,20 +74,21 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         String pass = edtPassword.getText().toString();
         AuthRequest login = new AuthRequest(email,pass);
         try{
-            Call<AuthRequest> call = accountService.Login(login);
-            call.enqueue(new Callback<AuthRequest>() {
+            Call<String> call = accountService.Login(login);
+            call.enqueue(new Callback<String>() {
                 @Override
-                public void onResponse(Call<AuthRequest> call, Response<AuthRequest> response) {
+                public void onResponse(Call<String> call, Response<String> response) {
                     if(response.body() != null){
                         Toast.makeText(LoginActivity.this,"Login Successfully", Toast.LENGTH_LONG).show();
                         Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                        sessionManager.createLoginSession(response.body());
                         startActivity(intent);
                         finish();
                     }
                 }
 
                 @Override
-                public void onFailure(Call<AuthRequest> call, Throwable t) {
+                public void onFailure(Call<String> call, Throwable t) {
                         Toast.makeText(LoginActivity.this,"Login Fail", Toast.LENGTH_LONG).show();
                     Intent intent = new Intent(LoginActivity.this, ProductActivity.class);
                     startActivity(intent);

@@ -9,17 +9,24 @@ public class Cart {
     private int ProductId;
     @SerializedName("accountId")
     private int AccountId;
+    @SerializedName("unitPrice")
+    private double UnitPrice;
     @SerializedName("quantity")
     private int Quantity;
     @SerializedName("product")
     private Product Product;
 
-    public Cart(int cartId, int productId, int accountId, int quantity) {
+    private String pic = "milk_pint";
+
+    public Cart(int cartId, int productId, int accountId, int quantity, int unitPrice, Product product) {
         CartId = cartId;
         ProductId = productId;
         AccountId = accountId;
         Quantity = quantity;
+        UnitPrice = unitPrice;
+        Product = product;
     }
+
 
     public Cart(int cartId, int productId, int accountId, int quantity, com.example.projectmilkshop.Domain.Product product) {
         CartId = cartId;
@@ -67,5 +74,21 @@ public class Cart {
 
     public void setQuantity(int quantity) {
         Quantity = quantity;
+    }
+
+    public double getUnitPrice() {
+        return UnitPrice;
+    }
+
+    public void setUnitPrice(double unitPrice) {
+        UnitPrice = unitPrice;
+    }
+
+    public String getPic() {
+        return pic;
+    }
+
+    public void setPic(String pic) {
+        this.pic = pic;
     }
 }
