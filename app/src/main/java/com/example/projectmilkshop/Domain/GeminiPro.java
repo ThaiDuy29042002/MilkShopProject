@@ -36,6 +36,8 @@ public class GeminiPro {
     private static final String BASE_URL = "https://192.168.2.16/api/v1/products/";
     private static GeminiPro instance;
     private ProductService productService;
+
+    private static GenerativeModelFutures model;
     private String dataJson;
     public static GeminiPro getInstance() {
         if (instance == null) {
@@ -46,7 +48,7 @@ public class GeminiPro {
 
     public void getResponse(String query, ResponseCallback callback) {
         try {
-            GenerativeModelFutures model = getModel();
+            if(model == null) model = getModel();
 
             Content content = new Content.Builder().addText(query).build();
             Executor executor = Runnable::run;
@@ -104,7 +106,7 @@ public class GeminiPro {
         TextPart data = new TextPart(dataJson);
 
         Content systemInstruction = new Content.Builder()
-                .addText("Your name is Javis and you are a customer advisor that support them in finding milk products which are data I give you")
+                .addText("Your name is Javis and you are a customer advisor that support customer in finding milk products based on data I provided")
                 .addPart(data)
                 .build();
 

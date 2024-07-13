@@ -1,6 +1,7 @@
 package com.example.projectmilkshop.Activity;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -41,6 +42,11 @@ public class ChatboxActivity extends AppCompatActivity {
         inputMsgEdt = findViewById(R.id.idEdtMessage);
 
         messageModelArrayList = new ArrayList<>();
+
+        if(firstTime) {
+            geminiPro.getResponse("quake",null);
+            firstTime = false;
+        }
         sendMsgBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -75,7 +81,7 @@ public class ChatboxActivity extends AppCompatActivity {
             public void onError(Throwable error) {
                 messageModelArrayList.add(new MessageModel("No response", BOT_KEY));
                 messageRVAdapter.notifyDataSetChanged();
-                System.out.println(error.getMessage());
+                Log.e("Error", error.getMessage());
             }
         });
     }
