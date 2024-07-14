@@ -2,6 +2,7 @@ package com.example.projectmilkshop.Api;
 
 import com.example.projectmilkshop.Domain.Account;
 import com.example.projectmilkshop.Domain.AuthRequest;
+import com.example.projectmilkshop.Domain.AuthResponse;
 
 import retrofit2.Call;
 import retrofit2.http.Body;
@@ -15,7 +16,7 @@ public interface AccountService {
     String UPDATEACCOUNT="update-account";
 
     @POST(LOGIN)
-    Call<String> Login(@Body AuthRequest account);
+    Call<AuthResponse> Login(@Body AuthRequest account);
 
     @POST(REGISTER)
     Call<Account> Register(@Body Account account);

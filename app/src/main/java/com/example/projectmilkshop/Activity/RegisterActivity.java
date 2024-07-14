@@ -111,7 +111,7 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
         String Password = edtPassword.getText().toString();
 
         try{
-            SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
+            SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
             Date date = format.parse(dateString);
             Account register = new Account(Name, Phone, Address, date, Email, Password);
             Call<Account> call = accountService.Register(register);

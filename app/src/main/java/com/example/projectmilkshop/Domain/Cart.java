@@ -18,7 +18,7 @@ public class Cart {
 
     private String pic = "milk_pint";
 
-    public Cart(int cartId, int productId, int accountId, int quantity, int unitPrice, Product product) {
+    public Cart(int cartId, int productId, int accountId, int quantity, double unitPrice, Product product) {
         CartId = cartId;
         ProductId = productId;
         AccountId = accountId;
@@ -28,7 +28,7 @@ public class Cart {
     }
 
 
-    public Cart(int cartId, int productId, int accountId, int quantity, com.example.projectmilkshop.Domain.Product product) {
+    public Cart(int cartId, int productId, int accountId, int quantity, Product product) {
         CartId = cartId;
         ProductId = productId;
         AccountId = accountId;

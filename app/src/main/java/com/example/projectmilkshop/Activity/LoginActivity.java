@@ -18,6 +18,7 @@ import androidx.core.view.WindowInsetsCompat;
 import com.example.projectmilkshop.Api.AccountRepository;
 import com.example.projectmilkshop.Api.AccountService;
 import com.example.projectmilkshop.Domain.AuthRequest;
+import com.example.projectmilkshop.Domain.AuthResponse;
 import com.example.projectmilkshop.Interceptor.SessionManager;
 import com.example.projectmilkshop.R;
 
@@ -49,11 +50,14 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         tvRegister = findViewById(R.id.tvRegister);
         tvForgotPassword = findViewById(R.id.tvForgotPassword);
 
+        sessionManager = new SessionManager(getApplicationContext());
+
         tvLogin.setOnClickListener(this);
         tvRegister.setOnClickListener(this);
         tvForgotPassword.setOnClickListener(this);
 
         accountService = AccountRepository.getAccountService();
+
     }
 
     private boolean checkInput() {
@@ -74,29 +78,30 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         String pass = edtPassword.getText().toString();
         AuthRequest login = new AuthRequest(email,pass);
         try{
-            Call<String> call = accountService.Login(login);
-            call.enqueue(new Callback<String>() {
+            Call<AuthResponse> call = accountService.Login(login);
+            call.enqueue(new Callback<AuthResponse>() {
                 @Override
-                public void onResponse(Call<String> call, Response<String> response) {
-                    if(response.body() != null){
+                public void onResponse(Call<AuthResponse> call, Response<AuthResponse> response) {
+                    if(response.body() != null && response.isSuccessful()){
                         Toast.makeText(LoginActivity.this,"Login Successfully", Toast.LENGTH_LONG).show();
                         Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-                        sessionManager.createLoginSession(response.body());
+                        sessionManager.createLoginSession(response.body().getAccess_token());
                         startActivity(intent);
                         finish();
                     }
                 }
 
                 @Override
-                public void onFailure(Call<String> call, Throwable t) {
-                        Toast.makeText(LoginActivity.this,"Login Fail", Toast.LENGTH_LONG).show();
-                    Intent intent = new Intent(LoginActivity.this, ProductActivity.class);
-                    startActivity(intent);
-                    finish();
+                public void onFailure(Call<AuthResponse> call, Throwable t) {
+                    Toast.makeText(LoginActivity.this,"Login Fail", Toast.LENGTH_LONG).show();
+                    edtEmail.setText("");
+                    edtPassword.setText("");
                 }
             });
-        }catch (Exception e) {
+        } catch (Exception e) {
             Log.d("Fix your information", e.getMessage());
+            edtEmail.setText("");
+            edtPassword.setText("");
         }
 
     }

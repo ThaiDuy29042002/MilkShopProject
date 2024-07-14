@@ -3,10 +3,10 @@ package com.example.projectmilkshop.Domain;
 import com.google.gson.annotations.SerializedName;
 
 public class AuthRequest {
-    @SerializedName("Email")
+    @SerializedName("email")
 
     public String Email;
-    @SerializedName("Password")
+    @SerializedName("password")
 
     public String Password;
 

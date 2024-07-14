@@ -1,11 +1,14 @@
 package com.example.projectmilkshop.Adapter;
 
+import android.app.AlertDialog;
+import android.content.Context;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -14,10 +17,8 @@ import com.bumptech.glide.Glide;
 import com.example.projectmilkshop.Api.CartService;
 import com.example.projectmilkshop.Domain.Cart;
 import com.example.projectmilkshop.Domain.CartRequest;
-import com.example.projectmilkshop.Domain.Product;
 import com.example.projectmilkshop.R;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import retrofit2.Call;
@@ -29,13 +30,17 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.ViewHolder> {
     private List<Cart> cartItems;
     private CartService cartService;
     private String jwtToken;
+    private OnCartChangeListener listener;
+    public interface OnCartChangeListener {
+        void onCartChanged(double totalPrice);
+    }
 
-    public CartAdapter(List<Cart> cartItems, CartService cartService, String jwtToken) {
+    public CartAdapter(List<Cart> cartItems, CartService cartService, String jwtToken, OnCartChangeListener listener) {
         this.cartItems = cartItems;
         this.cartService = cartService;
         this.jwtToken = jwtToken;
+        this.listener = listener;
     }
-
 
     @NonNull
     @Override
@@ -46,37 +51,73 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.ViewHolder> {
 
     @Override
     public void onBindViewHolder(@NonNull CartAdapter.ViewHolder holder, int position) {
-        Cart cartItem = cartItems.get(holder.getAdapterPosition());
-        Product product = cartItem.getProduct();
-        int quantity = cartItem.getQuantity();
+        Cart cartItem = cartItems.get(position);
 
-        holder.title.setText(product.getProductName());
-        holder.fee.setText(String.valueOf(product.getProductPrice()));
-        holder.quality.setText(String.valueOf(quantity));
-        holder.total.setText(String.valueOf(Math.round(quantity * product.getProductPrice())));
+        holder.title.setText(cartItem.getProduct().getProductName());
+        holder.fee.setText(String.valueOf(cartItem.getUnitPrice()));
+        holder.quality.setText(String.valueOf(cartItem.getQuantity()));
+        holder.total.setText(String.valueOf(cartItem.getUnitPrice() * cartItem.getQuantity()));
+
         int drawableResourceId = holder.itemView.getContext().getResources()
-                .getIdentifier(product.getPic(), "drawable",
-                        holder.itemView.getContext().getPackageName());
+                .getIdentifier(cartItem.getPic(), "drawable", holder.itemView.getContext().getPackageName());
         Glide.with(holder.itemView.getContext())
                 .load(drawableResourceId)
                 .into(holder.pic);
 
-        holder.btnAddQuality.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                cartItem.setQuantity(cartItem.getQuantity() + 1);
-                notifyItemChanged(holder.getAdapterPosition());
-                updateCartItem(cartItem, holder.getAdapterPosition());
-            }
+        holder.btnAddQuality.setOnClickListener(v -> {
+            cartItem.setQuantity(cartItem.getQuantity() + 1);
+            holder.total.setText(String.valueOf(cartItem.getUnitPrice() * cartItem.getQuantity()));
+            notifyItemChanged(holder.getAdapterPosition());
+            updateCartItem(cartItem, holder.getAdapterPosition());
+            updateTotalPrice();
         });
-        holder.btnMinusQuality.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (cartItem.getQuantity() > 1) {
+
+        holder.btnMinusQuality.setOnClickListener(v -> {
+            if (cartItem.getQuantity() >= 1) {
+                if(cartItem.getQuantity() - 1 == 0) {
+                    showRemoveConfirmationDialog(holder.itemView.getContext(), cartItem, holder.getAdapterPosition());
+                } else {
                     cartItem.setQuantity(cartItem.getQuantity() - 1);
+                    holder.total.setText(String.valueOf(cartItem.getUnitPrice() * cartItem.getQuantity()));
                     notifyItemChanged(holder.getAdapterPosition());
                     updateCartItem(cartItem, holder.getAdapterPosition());
+                    updateTotalPrice();
                 }
+            } else {
+                Toast.makeText(holder.itemView.getContext(), "Can not minus", Toast.LENGTH_LONG).show();
+            }
+        });
+    }
+
+    private void showRemoveConfirmationDialog(Context context, Cart cartItem, int adapterPosition) {
+        new AlertDialog.Builder(context)
+                .setTitle("Confirmation")
+                .setMessage("Are you sure you want to remove this item")
+                .setPositiveButton("Yes", (dialog, which) -> {
+                    cartItems.remove(cartItem);
+                    removeCartItem(cartItem, adapterPosition);
+                    notifyItemRemoved(adapterPosition);
+                    updateTotalPrice();
+                })
+                .setNegativeButton("No", null)
+                .show();
+    }
+
+    private void removeCartItem(Cart cartItem, int adapterPosition) {
+        Call<Void> call = cartService.RemoveProductFromCart(cartItem.getCartId());
+        call.enqueue(new Callback<Void>() {
+            @Override
+            public void onResponse(Call<Void> call, Response<Void> response) {
+                if (response.isSuccessful()) {
+                    Log.i("CartAdapter", "Cart item removed successfully");
+                } else {
+                    Log.e("CartAdapter", "Failed to remove cart item");
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Void> call, Throwable t) {
+                Log.e("CartAdapter", "API call failed", t);
             }
         });
     }
@@ -88,19 +129,21 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.ViewHolder> {
                 cartItem.getQuantity(),
                 1
         );
-        Call<Cart> call = cartService.updateCartItem(cartItem.getCartId(), cartRequest);
-        call.enqueue(new Callback<Cart>() {
+
+        Call<Void> call = cartService.UpdateCartItem(cartItem.getCartId(), cartRequest);
+        call.enqueue(new Callback<Void>() {
             @Override
-            public void onResponse(Call<Cart> call, Response<Cart> response) {
+            public void onResponse(Call<Void> call, Response<Void> response) {
                 if (response.isSuccessful()) {
                     notifyItemChanged(position);
+                    Log.i("CartAdapter", "Cart item updated successfully");
                 } else {
                     Log.e("CartAdapter", "Failed to update cart item");
                 }
             }
 
             @Override
-            public void onFailure(Call<Cart> call, Throwable t) {
+            public void onFailure(Call<Void> call, Throwable t) {
                 Log.e("CartAdapter", "API call failed", t);
             }
         });
@@ -111,8 +154,17 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.ViewHolder> {
         return cartItems.size();
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder {
+    private void updateTotalPrice() {
+        double total = 0;
+        for (Cart cart : cartItems) {
+            total += cart.getUnitPrice() * cart.getQuantity();
+        }
+        if (listener != null) {
+            listener.onCartChanged(total);
+        }
+    }
 
+    public static class ViewHolder extends RecyclerView.ViewHolder {
         TextView title, fee, total, quality;
         ImageView pic, btnMinusQuality, btnAddQuality;
 
@@ -128,3 +180,4 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.ViewHolder> {
         }
     }
 }
+

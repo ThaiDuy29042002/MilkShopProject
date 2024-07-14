@@ -21,18 +21,21 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.projectmilkshop.Adapter.CartAdapter;
 import com.example.projectmilkshop.Api.CartRepository;
 import com.example.projectmilkshop.Api.CartService;
+import com.example.projectmilkshop.Api.OrderRepository;
+import com.example.projectmilkshop.Api.OrderService;
 import com.example.projectmilkshop.Domain.Cart;
 import com.example.projectmilkshop.Domain.Product;
 import com.example.projectmilkshop.Interceptor.SessionManager;
 import com.example.projectmilkshop.R;
 
 import java.util.ArrayList;
+import java.util.Locale;
 
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class CartActivity extends AppCompatActivity {
+public class CartActivity extends AppCompatActivity implements CartAdapter.OnCartChangeListener {
 
     private RecyclerView.Adapter adapter;
     private RecyclerView recyclerView;
@@ -43,7 +46,9 @@ public class CartActivity extends AppCompatActivity {
 
     private SessionManager sessionManager;
     private CartService cartService;
+    private OrderService orderService;
     private String jwtToken;
+    private ArrayList<Cart> cartItemsList = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,9 +67,9 @@ public class CartActivity extends AppCompatActivity {
         scrollView = findViewById(R.id.srcollViewCart);
 
         sessionManager = new SessionManager(getApplicationContext());
-        jwtToken = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InVzZXIwMUBnbWFpbC5jb20iLCJyb2xlIjoiMiIsImFjY291bnRJZCI6IjEiLCJuYmYiOjE3MjA4NDI4NDUsImV4cCI6MTcyMDg0NjQ0NSwiaWF0IjoxNzIwODQyODQ1LCJpc3MiOiJJc3N1ZXIiLCJhdWQiOiJBdWRpZW5jZSJ9.smuFiJ7WlcLOIgCtH48KiGhd3bHDueOuQPiODsUUnt4";
-                //sessionManager.getJwtToken();
+        jwtToken = sessionManager.getJwtToken();
         cartService = CartRepository.getCartService(jwtToken);
+        orderService = OrderRepository.getOrderService(jwtToken);
 
         fetchCartItems();
 
@@ -72,6 +77,7 @@ public class CartActivity extends AppCompatActivity {
         btnCheckout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
             }
         });
 
@@ -80,34 +86,48 @@ public class CartActivity extends AppCompatActivity {
 
 
     private void fetchCartItems() {
-        Call<Cart[]> call = cartService.GetCartOfAccount();
-        call.enqueue(new Callback<Cart[]>() {
-            @Override
-            public void onResponse(Call<Cart[]> call, Response<Cart[]> response) {
-                if (response.isSuccessful() && response.body() != null) {
-                    Cart[] cartItems = response.body();
-                    updateCart(cartItems);
-                } else {
-                    Toast.makeText(CartActivity.this, "Failed to load cart items", Toast.LENGTH_LONG).show();
+        try {
+            Call<Cart[]> call = cartService.GetCartOfAccount();
+            call.enqueue(new Callback<Cart[]>() {
+                @Override
+                public void onResponse(Call<Cart[]> call, Response<Cart[]> response) {
+                    if (response.isSuccessful() && response.body() != null) {
+                        Cart[] cartItems = response.body();
+                        loadCart(cartItems);
+                    } else {
+                        Toast.makeText(CartActivity.this, "Failed to load cart items", Toast.LENGTH_LONG).show();
+                    }
                 }
-            }
 
-            @Override
-            public void onFailure(Call<Cart[]> call, Throwable t) {
-                Toast.makeText(CartActivity.this, "API call failed", Toast.LENGTH_LONG).show();
-                Log.e("CartActivity", "Error fetching cart items", t);
-            }
-        });
+                @Override
+                public void onFailure(Call<Cart[]> call, Throwable t) {
+                    Toast.makeText(CartActivity.this, "API call failed", Toast.LENGTH_LONG).show();
+                    Log.e("CartActivity", "Error fetching cart items", t);
+                }
+            });
+        }
+        catch (Exception ex) {
+            Log.e("Error", ex.getMessage());
+        }
     }
 
-    private void updateCart(Cart[] cartItems) {
-        ArrayList<Cart> cartItemsList = new ArrayList<>();
-        for (Cart item : cartItems) {
-            item.getProduct().setPic("milk");
-            cartItemsList.add(item);
+    private void loadCart(Cart[] cartItems) {
+        try {
+            double total = 0;
+            for (Cart cartItem : cartItems) {
+                cartItem.getProduct().setPic("milk_pint");
+                cartItem.setPic("milk_pint");
+                total += cartItem.getQuantity() * cartItem.getUnitPrice();
+                cartItemsList.add(cartItem);
+            }
+            adapter = new CartAdapter(cartItemsList, cartService, jwtToken, this);
+            recyclerView.setLayoutManager(new LinearLayoutManager(this));
+            recyclerView.setAdapter(adapter);
+            tvTotal.setText(String.valueOf(total));
         }
-        adapter = new CartAdapter(cartItemsList, cartService, jwtToken);
-        recyclerView.setAdapter(adapter);
+        catch (Exception ex) {
+            Log.e("Error", ex.getMessage());
+        }
     }
     private void bottomNavigation() {
         LinearLayout homebtn = findViewById(R.id.homeBtn);
@@ -146,5 +166,10 @@ public class CartActivity extends AppCompatActivity {
                 startActivity(new Intent(CartActivity.this, MapActivity.class));
             }
         });
+    }
+
+    @Override
+    public void onCartChanged(double totalPrice) {
+        tvTotal.setText(String.format(Locale.getDefault(), "%.2f", totalPrice));
     }
 }

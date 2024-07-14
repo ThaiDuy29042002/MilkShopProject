@@ -17,8 +17,10 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 public class APIClient {
-    private static String baseURL = "https://10.87.1.184:7077/api/v1/";
+    private static String baseURL = "https://192.168.2.16:7077/api/v1/";
     private static Retrofit retrofit;
+    private static Retrofit authRetrofit;
+    private  static  String jwtToken ;
     public SharedPreferences sharedPreferences;
     public APIClient(SharedPreferences sharedPreferences){
         this.sharedPreferences = sharedPreferences;
@@ -32,14 +34,16 @@ public class APIClient {
         }
         return retrofit;
     }
-    public static Retrofit getClient(String jwtToken){
-        if(retrofit == null){
-            retrofit = new Retrofit.Builder().baseUrl(baseURL)
+
+    public static Retrofit getClientWithAuth(String token) {
+        if (authRetrofit == null || jwtToken == null || !jwtToken.equals(token)) {
+            jwtToken = token;
+            authRetrofit = new Retrofit.Builder().baseUrl(baseURL)
                     .addConverterFactory(GsonConverterFactory.create())
                     .client(getUnsafeOkHttpClient(jwtToken))
                     .build();
         }
-        return retrofit;
+        return authRetrofit;
     }
 
     public static OkHttpClient getUnsafeOkHttpClient() {

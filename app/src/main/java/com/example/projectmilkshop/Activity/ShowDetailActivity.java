@@ -24,6 +24,7 @@ import com.example.projectmilkshop.Api.ProductService;
 import com.example.projectmilkshop.Domain.Cart;
 import com.example.projectmilkshop.Domain.CartRequest;
 import com.example.projectmilkshop.Domain.Product;
+import com.example.projectmilkshop.Interceptor.SessionManager;
 import com.example.projectmilkshop.R;
 
 import retrofit2.Call;
@@ -37,6 +38,7 @@ public class ShowDetailActivity extends AppCompatActivity {
     private ImageView imgMilk, btnMinusQuality, btnAddQuality;
     private TextView tvDetailTitle, tvDetailPrice, tvItemQuality, tvDetailDescription, tvDetailTotal, tvDetailAddToCart;
     private String jwtToken;
+    private SessionManager sessionManager;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -76,9 +78,9 @@ public class ShowDetailActivity extends AppCompatActivity {
             updateTotalPrice();
         });
 
-        jwtToken = "";
-
         tvDetailAddToCart.setOnClickListener(v -> {
+            sessionManager = new SessionManager(getApplicationContext());
+            jwtToken = sessionManager.getJwtToken();
             int productId = getIntent().getIntExtra("productId", -1);
             int quantity = Integer.parseInt(tvItemQuality.getText().toString());
             addProductToCart(productId, quantity, jwtToken);
@@ -90,13 +92,12 @@ public class ShowDetailActivity extends AppCompatActivity {
 
     private void addProductToCart(int productId, int quantity, String jwtToken) {
         CartService cartService = CartRepository.getCartService(jwtToken);
-        int accountId = 1;
-        CartRequest cart = new CartRequest(productId, accountId, quantity, 0);
-        Call<Cart> call = cartService.AddProductToCart(cart);
-        call.enqueue(new Callback<Cart>() {
+        CartRequest cart = new CartRequest(productId, 0, quantity, 0);
+        Call<Void> call = cartService.AddProductToCart(cart);
+        call.enqueue(new Callback<Void>() {
             @Override
-            public void onResponse(Call<Cart> call, Response<Cart> response) {
-                if (response.isSuccessful() && response.body() != null) {
+            public void onResponse(Call<Void> call, Response<Void> response) {
+                if (response.isSuccessful()) {
                     Log.i(TAG, "Product added to cart successfully.");
                 } else {
                     Log.e(TAG, "Failed to add product to cart: " + response.message());
@@ -104,7 +105,7 @@ public class ShowDetailActivity extends AppCompatActivity {
             }
 
             @Override
-            public void onFailure(Call<Cart> call, Throwable t) {
+            public void onFailure(Call<Void> call, Throwable t) {
                 Log.e(TAG, "Failed to add product to cart", t);
             }
         });

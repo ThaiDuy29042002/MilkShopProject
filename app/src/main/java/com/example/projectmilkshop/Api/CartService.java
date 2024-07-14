@@ -9,7 +9,6 @@ import retrofit2.http.DELETE;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
 import retrofit2.http.PUT;
-import retrofit2.http.Path;
 import retrofit2.http.Query;
 
 public interface CartService {
@@ -19,11 +18,11 @@ public interface CartService {
     Call<Cart[]> GetCartOfAccount();
 
     @POST(CART)
-    Call<Cart> AddProductToCart(@Body CartRequest cart);
+    Call<Void> AddProductToCart(@Body CartRequest cart);
 
     @DELETE(CART)
-    Call<Cart> RemoveProductFromCart(@Body Cart cart);
+    Call<Void> RemoveProductFromCart(@Query("cartId") int cartId);
 
     @PUT(CART)
-    Call<Cart> updateCartItem(@Query("cartId") int cartId, @Body CartRequest cart);
+    Call<Void> UpdateCartItem(@Query("cartId") int cartId, @Body CartRequest cart);
 }
