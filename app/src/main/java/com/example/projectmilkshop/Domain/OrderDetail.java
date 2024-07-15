@@ -1,17 +1,19 @@
 package com.example.projectmilkshop.Domain;
 
+import com.google.gson.annotations.SerializedName;
+
 public class OrderDetail {
-
+    @SerializedName("orderDetailId")
     private int OrderDetailId;
-
+    @SerializedName("orderDetailId")
     private int OrderId;
-
+    @SerializedName("productId")
     private int ProductId;
-
+    @SerializedName("orderQuantity")
     private int OrderQuantity;
-
+    @SerializedName("productPrice")
     private double ProductPrice;
-
+    @SerializedName("status")
     private int Status;
 
     public OrderDetail(int orderDetailId, int orderId, int productId, int orderQuantity, double productPrice, int status) {

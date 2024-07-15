@@ -1,6 +1,7 @@
 package com.example.projectmilkshop.Activity;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -25,6 +26,7 @@ import com.example.projectmilkshop.Api.OrderRepository;
 import com.example.projectmilkshop.Api.OrderService;
 import com.example.projectmilkshop.Domain.Cart;
 import com.example.projectmilkshop.Domain.Product;
+import com.example.projectmilkshop.Domain.VnpayResponse;
 import com.example.projectmilkshop.Interceptor.SessionManager;
 import com.example.projectmilkshop.R;
 
@@ -77,14 +79,11 @@ public class CartActivity extends AppCompatActivity implements CartAdapter.OnCar
         btnCheckout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                createOrder();
             }
         });
 
     }
-
-
-
     private void fetchCartItems() {
         try {
             Call<Cart[]> call = cartService.GetCartOfAccount();
@@ -171,5 +170,30 @@ public class CartActivity extends AppCompatActivity implements CartAdapter.OnCar
     @Override
     public void onCartChanged(double totalPrice) {
         tvTotal.setText(String.format(Locale.getDefault(), "%.2f", totalPrice));
+    }
+
+    private void createOrder() {
+        Call<VnpayResponse> call = orderService.CreateOrder();
+        call.enqueue(new Callback<VnpayResponse>() {
+            @Override
+            public void onResponse(Call<VnpayResponse> call, Response<VnpayResponse> response) {
+                if(response.isSuccessful() && response.body() != null) {
+                    String paymentUrl = response.body().getVnpay_link();
+                    redirectToPayment(paymentUrl);
+                } else {
+                    Toast.makeText(CartActivity.this, "Failed to create order", Toast.LENGTH_LONG).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<VnpayResponse> call, Throwable t) {
+                Log.e("Error", t.getMessage());
+            }
+        });
+    }
+
+    private void redirectToPayment(String paymentUrl) {
+        Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(paymentUrl));
+        startActivity(browserIntent);
     }
 }

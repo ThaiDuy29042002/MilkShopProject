@@ -25,7 +25,6 @@
             android:text="User message"
             android:textColor="@color/black" />
 
-        <!--we are displaying user icon-->
         <ImageView
             android:layout_width="50dp"
             android:layout_height="50dp"

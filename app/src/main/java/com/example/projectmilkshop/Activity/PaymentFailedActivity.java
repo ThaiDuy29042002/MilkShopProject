@@ -27,7 +27,7 @@ public class PaymentFailedActivity extends AppCompatActivity {
         if (data != null) {
             String orderId = data.getQueryParameter("orderId");
             TextView tvMessage = findViewById(R.id.tvMessage);
-            tvMessage.setText("Thanh toán thất bại!\nMã đơn hàng: " + orderId);
+            tvMessage.setText("Order Identity: " + orderId);
         }
 
         Button btnBack = findViewById(R.id.btnBack);

@@ -1,10 +1,12 @@
 package com.example.projectmilkshop.Activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
@@ -47,6 +49,7 @@ public class ChatboxActivity extends AppCompatActivity {
             geminiPro.getResponse("quake",null);
             firstTime = false;
         }
+        bottomNavigation();
         sendMsgBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -82,6 +85,45 @@ public class ChatboxActivity extends AppCompatActivity {
                 messageModelArrayList.add(new MessageModel("No response", BOT_KEY));
                 messageRVAdapter.notifyDataSetChanged();
                 Log.e("Error", error.getMessage());
+            }
+        });
+    }
+
+    private void bottomNavigation() {
+        LinearLayout homebtn = findViewById(R.id.homeBtn);
+        LinearLayout profilebtn = findViewById(R.id.profilebtn);
+        LinearLayout cartbtn = findViewById(R.id.cartbtn);
+        LinearLayout supportbtn = findViewById(R.id.supportbtn);
+        LinearLayout mapbtn = findViewById(R.id.btnMap);
+
+        homebtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(ChatboxActivity.this, MainActivity.class));
+            }
+        });
+        profilebtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(ChatboxActivity.this, ProductActivity.class));
+            }
+        });
+        cartbtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(ChatboxActivity.this, CartActivity.class));
+            }
+        });
+        supportbtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(ChatboxActivity.this, ChatboxActivity.class));
+            }
+        });
+        mapbtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(ChatboxActivity.this, MapActivity.class));
             }
         });
     }

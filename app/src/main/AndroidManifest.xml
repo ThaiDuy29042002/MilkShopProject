@@ -6,6 +6,7 @@
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
 
     <application
         android:allowBackup="true"
@@ -20,33 +21,40 @@
         tools:targetApi="31">
         <activity
             android:name=".Activity.PaymentFailedActivity"
-            android:exported="true" >
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
+
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
-                <data android:scheme="milkstore" android:host="android-app" />
+
+                <data
+                    android:host="payment-failed"
+                    android:scheme="milkstore"/>
             </intent-filter>
         </activity>
         <activity
             android:name=".Activity.PaymentSuccessActivity"
-            android:exported="true" >
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
-                <data android:scheme="milkstore" android:host="android-app" />
+
+                <data
+                    android:host="payment-success"
+                    android:scheme="milkstore" />
             </intent-filter>
         </activity>
         <activity
             android:name=".Activity.ChatboxActivity"
-            android:exported="false" />
+            android:exported="true" />
         <activity
             android:name=".Activity.ShowDetailActivity"
             android:exported="false" />
         <activity
             android:name=".Activity.CartActivity"
-            android:exported="true" />
+            android:exported="false" />
         <activity
             android:name=".Activity.MapActivity"
             android:exported="false" />

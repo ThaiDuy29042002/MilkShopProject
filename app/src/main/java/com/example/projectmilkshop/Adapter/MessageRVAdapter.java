@@ -1,6 +1,7 @@
 package com.example.projectmilkshop.Adapter;
 
 import android.content.Context;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -28,46 +29,38 @@ public class MessageRVAdapter extends RecyclerView.Adapter {
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view;
-        // below code is to switch our
-        // layout type along with view holder.
-        switch (viewType) {
-            case 0:
-                // below line we are inflating user message layout.
-                view = LayoutInflater.from(parent.getContext()).inflate(R.layout.user_messages, parent, false);
-                return new UserViewHolder(view);
-            case 1:
-                // below line we are inflating bot message layout.
-                view = LayoutInflater.from(parent.getContext()).inflate(R.layout.bot_messages, parent, false);
-                return new BotViewHolder(view);
+        if(viewType == 0) {
+            view = LayoutInflater.from(parent.getContext()).inflate(R.layout.user_messages, parent, false);
+            return new UserViewHolder(view);
+        } else if (viewType == 1) {
+            view = LayoutInflater.from(parent.getContext()).inflate(R.layout.bot_messages, parent, false);
+            return new BotViewHolder(view);
         }
         return null;
     }
 
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
-        // this method is use to set data to our layout file.
         MessageModel modal = messageModalArrayList.get(position);
         switch (modal.getSender()) {
             case "user":
-                // below line is to set the text to our text view of user layout
                 ((UserViewHolder) holder).userTV.setText(modal.getMessage());
+                ((UserViewHolder) holder).userTV.setGravity(Gravity.END);
                 break;
             case "bot":
-                // below line is to set the text to our text view of bot layout
                 ((BotViewHolder) holder).botTV.setText(modal.getMessage());
+                ((BotViewHolder) holder).botTV.setGravity(Gravity.START);
                 break;
         }
     }
 
     @Override
     public int getItemCount() {
-        // return the size of array list
         return messageModalArrayList.size();
     }
 
     @Override
     public int getItemViewType(int position) {
-        // below line of code is to set position.
         switch (messageModalArrayList.get(position).getSender()) {
             case "user":
                 return 0;
@@ -79,22 +72,15 @@ public class MessageRVAdapter extends RecyclerView.Adapter {
     }
 
     public static class UserViewHolder extends RecyclerView.ViewHolder {
-
-        // creating a variable
-        // for our text view.
         TextView userTV;
 
         public UserViewHolder(@NonNull View itemView) {
             super(itemView);
-            // initializing with id.
             userTV = itemView.findViewById(R.id.idTVUser);
         }
     }
 
     public static class BotViewHolder extends RecyclerView.ViewHolder {
-
-        // creating a variable
-        // for our text view.
         TextView botTV;
 
         public BotViewHolder(@NonNull View itemView) {

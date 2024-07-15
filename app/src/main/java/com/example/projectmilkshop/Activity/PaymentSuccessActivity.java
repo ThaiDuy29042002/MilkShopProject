@@ -29,7 +29,7 @@ public class PaymentSuccessActivity extends AppCompatActivity {
             String orderId = data.getQueryParameter("orderId");
 
             TextView tvMessage = findViewById(R.id.tvMessage);
-            tvMessage.setText("Thanh toán thành công!\nMã đơn hàng: " + orderId);
+            tvMessage.setText("Order Identity: " + orderId);
         }
 
         Button btnBack = findViewById(R.id.btnBack);

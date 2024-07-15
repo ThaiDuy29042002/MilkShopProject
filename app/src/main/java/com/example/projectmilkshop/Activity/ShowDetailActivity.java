@@ -9,6 +9,7 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -98,9 +99,9 @@ public class ShowDetailActivity extends AppCompatActivity {
             @Override
             public void onResponse(Call<Void> call, Response<Void> response) {
                 if (response.isSuccessful()) {
-                    Log.i(TAG, "Product added to cart successfully.");
+                    Toast.makeText(ShowDetailActivity.this, "Product added to cart successfully.", Toast.LENGTH_SHORT).show();
                 } else {
-                    Log.e(TAG, "Failed to add product to cart: " + response.message());
+                    Toast.makeText(ShowDetailActivity.this, "Product added to cart failed.", Toast.LENGTH_SHORT).show();
                 }
             }
 

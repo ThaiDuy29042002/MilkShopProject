@@ -1,16 +1,43 @@
 package com.example.projectmilkshop.Domain;
 
-public class Order {
-    public int OrderId;
-    public int AccountId;
-    public double TotalPrice;
-    public int Status;
+import com.google.gson.annotations.SerializedName;
 
-    public Order(int orderId, int accountId, double totalPrice, int status) {
+public class Order {
+    @SerializedName("orderId")
+    private int OrderId;
+    @SerializedName("accountId")
+    private int AccountId;
+    @SerializedName("totalPrice")
+    private double TotalPrice;
+    @SerializedName("status")
+    private int Status;
+    @SerializedName("orderDate")
+    private String OrderDate;
+    @SerializedName("orderDetails")
+    private OrderDetail[] OrderDetails;
+
+    public Order(int orderId, int accountId, double totalPrice, int status, String orderDate) {
         OrderId = orderId;
         AccountId = accountId;
         TotalPrice = totalPrice;
         Status = status;
+        OrderDate = orderDate;
+    }
+
+    public OrderDetail[] getOrderDetails() {
+        return OrderDetails;
+    }
+
+    public void setOrderDetails(OrderDetail[] orderDetails) {
+        OrderDetails = orderDetails;
+    }
+
+    public String getOrderDate() {
+        return OrderDate;
+    }
+
+    public void setOrderDate(String orderDate) {
+        OrderDate = orderDate;
     }
 
     public int getOrderId() {

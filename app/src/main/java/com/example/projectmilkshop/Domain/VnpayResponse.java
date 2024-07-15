@@ -1,9 +1,9 @@
 package com.example.projectmilkshop.Domain;
 
-public class OrderResponse {
+public class VnpayResponse {
     private String vnpay_link;
 
-    public OrderResponse(String vnpay_link) {
+    public VnpayResponse(String vnpay_link) {
         this.vnpay_link = vnpay_link;
     }
 
