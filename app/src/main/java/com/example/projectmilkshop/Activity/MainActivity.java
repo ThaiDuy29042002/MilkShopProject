@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -39,6 +40,7 @@ public class MainActivity extends AppCompatActivity {
     private RecyclerView recylerViewCategory, recyclerViewPopular;
     private TextView tvMap, tvProfile, tvCart, tvSupport, textView5, tvSeeMore;
     private EditText edtSearch;
+    private ImageView imgMyProfile;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,11 +57,21 @@ public class MainActivity extends AppCompatActivity {
         textView5 = findViewById(R.id.textView5);
         edtSearch = findViewById(R.id.edtSearch);
         productService = ProductRepository.getProductService();
+        imgMyProfile = findViewById(R.id.imgMyProfile);
+
+        imgMyProfile.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(MainActivity.this, ProfileActivity.class));
+                finish();
+            }
+        });
 
         tvSeeMore.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 startActivity(new Intent(MainActivity.this, ProductActivity.class));
+                finish();
             }
         });
         recylerViewCategory();

@@ -18,6 +18,8 @@ import androidx.core.view.WindowInsetsCompat;
 import com.example.projectmilkshop.Api.AccountRepository;
 import com.example.projectmilkshop.Api.AccountService;
 import com.example.projectmilkshop.Domain.Account;
+import com.example.projectmilkshop.Domain.AuthResponse;
+import com.example.projectmilkshop.Interceptor.SessionManager;
 import com.example.projectmilkshop.R;
 
 import java.text.ParseException;
@@ -35,6 +37,7 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
     private TextView tvRegister, tvLogin;
     private final String REQUIRE = "Require";
     private final String REQUIRE1 = "Password and Confirm Password not match";
+    private SessionManager sessionManager;
 
 
     @Override
@@ -114,19 +117,23 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
             SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
             Date date = format.parse(dateString);
             Account register = new Account(Name, Phone, Address, date, Email, Password);
-            Call<Account> call = accountService.Register(register);
-            call.enqueue(new Callback<Account>() {
+            Call<AuthResponse> call = accountService.Register(register);
+            call.enqueue(new Callback<AuthResponse>() {
                 @Override
-                public void onResponse(Call<Account> call, Response<Account> response) {
-                    if(response.body() != null){
+                public void onResponse(Call<AuthResponse> call, Response<AuthResponse> response) {
+                    if(response.isSuccessful() && response.body() != null){
                         Toast.makeText(RegisterActivity.this,"Register Successfully", Toast.LENGTH_LONG).show();
-
+                        sessionManager.createLoginSession(response.body().getAccess_token());
+                        startActivity(new Intent(RegisterActivity.this, MainActivity.class));
+                        finish();
+                    } else {
+                        Toast.makeText(RegisterActivity.this,"Register Fail", Toast.LENGTH_LONG).show();
                     }
                 }
 
                 @Override
-                public void onFailure(Call<Account> call, Throwable t) {
-                    Toast.makeText(RegisterActivity.this,"Login Fail", Toast.LENGTH_LONG).show();
+                public void onFailure(Call<AuthResponse> call, Throwable t) {
+                    Toast.makeText(RegisterActivity.this,"Register Fail From Server", Toast.LENGTH_LONG).show();
                 }
             });
         }catch (Exception e) {

@@ -20,6 +20,15 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
         <activity
+            android:name=".Activity.UpdateAccountActivity"
+            android:exported="false" />
+        <activity
+            android:name=".Activity.MyOrderActivity"
+            android:exported="false" />
+        <activity
+            android:name=".Activity.ProfileActivity"
+            android:exported="false" />
+        <activity
             android:name=".Activity.PaymentFailedActivity"
             android:exported="true">
             <intent-filter>
@@ -30,7 +39,7 @@
 
                 <data
                     android:host="payment-failed"
-                    android:scheme="milkstore"/>
+                    android:scheme="milkstore" />
             </intent-filter>
         </activity>
         <activity
@@ -38,6 +47,7 @@
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
+
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
 

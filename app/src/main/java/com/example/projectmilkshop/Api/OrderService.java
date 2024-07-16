@@ -1,5 +1,6 @@
 package com.example.projectmilkshop.Api;
 
+import com.example.projectmilkshop.Domain.Order;
 import com.example.projectmilkshop.Domain.VnpayResponse;
 
 import retrofit2.Call;
@@ -12,4 +13,6 @@ public interface OrderService {
     @POST(ORDER)
     Call<VnpayResponse> CreateOrder();
 
+    @GET("orders")
+    Call<Order[]> GetOrdersOfAccount();
 }

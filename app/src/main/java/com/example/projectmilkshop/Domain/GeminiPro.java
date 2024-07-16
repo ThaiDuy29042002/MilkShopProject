@@ -106,7 +106,7 @@ public class GeminiPro {
         TextPart data = new TextPart(dataJson);
 
         Content systemInstruction = new Content.Builder()
-                .addText("Your name is Javis and you are a customer advisor that support customer in finding milk products based on data I provided")
+                .addText("Your name is Javis and you are a customer advisor that support customer in finding milk products based on data I provided and your knowledge")
                 .addPart(data)
                 .build();
 

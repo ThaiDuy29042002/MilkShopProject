@@ -37,6 +37,14 @@ public class Account {
         Password = password;
     }
 
+    public String getAddress() {
+        return Address;
+    }
+
+    public void setAddress(String address) {
+        Address = address;
+    }
+
     public int getAccountId() {
         return AccountId;
     }

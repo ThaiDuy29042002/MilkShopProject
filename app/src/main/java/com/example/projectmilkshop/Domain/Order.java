@@ -13,8 +13,6 @@ public class Order {
     private int Status;
     @SerializedName("orderDate")
     private String OrderDate;
-    @SerializedName("orderDetails")
-    private OrderDetail[] OrderDetails;
 
     public Order(int orderId, int accountId, double totalPrice, int status, String orderDate) {
         OrderId = orderId;
@@ -24,13 +22,6 @@ public class Order {
         OrderDate = orderDate;
     }
 
-    public OrderDetail[] getOrderDetails() {
-        return OrderDetails;
-    }
-
-    public void setOrderDetails(OrderDetail[] orderDetails) {
-        OrderDetails = orderDetails;
-    }
 
     public String getOrderDate() {
         return OrderDate;
