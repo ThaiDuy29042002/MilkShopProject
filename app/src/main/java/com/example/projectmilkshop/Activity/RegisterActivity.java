@@ -63,6 +63,8 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
         tvLogin.setOnClickListener(this);
         tvRegister.setOnClickListener(this);
 
+        sessionManager = new SessionManager(getApplicationContext());
+
         accountService = AccountRepository.getAccountService();
     }
 
@@ -127,7 +129,7 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
                         startActivity(new Intent(RegisterActivity.this, MainActivity.class));
                         finish();
                     } else {
-                        Toast.makeText(RegisterActivity.this,"Register Fail", Toast.LENGTH_LONG).show();
+                        Toast.makeText(RegisterActivity.this, "Error", Toast.LENGTH_LONG).show();
                     }
                 }
 

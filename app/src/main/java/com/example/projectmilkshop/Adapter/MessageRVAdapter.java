@@ -19,7 +19,6 @@ public class MessageRVAdapter extends RecyclerView.Adapter {
     private ArrayList<MessageModel> messageModalArrayList;
     private Context context;
 
-    // constructor class.
     public MessageRVAdapter(ArrayList<MessageModel> messageModalArrayList, Context context) {
         this.messageModalArrayList = messageModalArrayList;
         this.context = context;
@@ -45,11 +44,9 @@ public class MessageRVAdapter extends RecyclerView.Adapter {
         switch (modal.getSender()) {
             case "user":
                 ((UserViewHolder) holder).userTV.setText(modal.getMessage());
-                ((UserViewHolder) holder).userTV.setGravity(Gravity.END);
                 break;
             case "bot":
                 ((BotViewHolder) holder).botTV.setText(modal.getMessage());
-                ((BotViewHolder) holder).botTV.setGravity(Gravity.START);
                 break;
         }
     }
@@ -77,6 +74,7 @@ public class MessageRVAdapter extends RecyclerView.Adapter {
         public UserViewHolder(@NonNull View itemView) {
             super(itemView);
             userTV = itemView.findViewById(R.id.idTVUser);
+            itemView.setForegroundGravity(Gravity.END);
         }
     }
 
@@ -85,8 +83,8 @@ public class MessageRVAdapter extends RecyclerView.Adapter {
 
         public BotViewHolder(@NonNull View itemView) {
             super(itemView);
-            // initializing with id.
             botTV = itemView.findViewById(R.id.idTVBot);
+            itemView.setForegroundGravity(Gravity.START);
         }
     }
 }

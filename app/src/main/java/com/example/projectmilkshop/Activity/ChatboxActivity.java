@@ -1,5 +1,6 @@
 package com.example.projectmilkshop.Activity;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -69,17 +70,20 @@ public class ChatboxActivity extends AppCompatActivity {
         chatsRV.setAdapter(messageRVAdapter);
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     private void sendMessage(String userMsg) {
         messageModelArrayList.add(new MessageModel(userMsg, USER_KEY));
         messageRVAdapter.notifyDataSetChanged();
 
         geminiPro.getResponse(userMsg, new ResponseCallback() {
+            @SuppressLint("NotifyDataSetChanged")
             @Override
             public void onResponse(String response) {
                 messageModelArrayList.add(new MessageModel(response, BOT_KEY));
                 messageRVAdapter.notifyDataSetChanged();
             }
 
+            @SuppressLint("NotifyDataSetChanged")
             @Override
             public void onError(Throwable error) {
                 messageModelArrayList.add(new MessageModel("No response", BOT_KEY));

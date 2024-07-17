@@ -27,6 +27,7 @@ public class ProfileActivity extends AppCompatActivity {
     private TextView edtEmail;
     private Button btnUpdate;
     private Button btnMyOrder;
+    private Button btnLogout;
     private String jwtToken;
     private SessionManager sessionManager;
     @Override
@@ -42,6 +43,7 @@ public class ProfileActivity extends AppCompatActivity {
         edtEmail = findViewById(R.id.edtEmail);
         btnUpdate = findViewById(R.id.btnUpdate);
         btnMyOrder = findViewById(R.id.btnMyOrder);
+        btnLogout = findViewById(R.id.btnLogout);
         sessionManager = new SessionManager(getApplicationContext());
         jwtToken = sessionManager.getJwtToken();
 
@@ -52,6 +54,12 @@ public class ProfileActivity extends AppCompatActivity {
 
         btnMyOrder.setOnClickListener(v -> {
             startActivity(new Intent(ProfileActivity.this, MyOrderActivity.class));
+            finish();
+        });
+
+        btnLogout.setOnClickListener(v -> {
+            sessionManager.logout();
+            startActivity(new Intent(ProfileActivity.this, LoginActivity.class));
             finish();
         });
 

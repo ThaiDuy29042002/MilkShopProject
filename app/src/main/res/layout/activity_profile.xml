@@ -267,7 +267,15 @@
                             android:id="@+id/btnMyOrder"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:layout_marginEnd="10dp"
                             android:text="My Order"/>
+
+                        <Button
+                            android:id="@+id/btnLogout"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Logout"/>
+
                     </LinearLayout>
 
                 </LinearLayout>
